@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0} img{max-width:100%} [hidden]{display:none!important}</style>
+<title>PYP Leadership Intelligences Map</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Newsreader:ital,opsz,wght@1,6..72,400;1,6..72,500&family=Public+Sans:wght@400;500;600&display=swap">
+<style>
+/* Layout: a sticky concentric wheel (intelligence → Environment → Learning → quotes) beside one card per intelligence. */
+:root{
+  --bg:#F4F6F3; --surface:#FFFFFF; --fg:#1B2128; --muted:#5A636E; --line:#D9DED7; --on-hue:#FFFFFF;
+  --strategic:#2F5B8F; --cultural:#B4532F; --entrepreneurial:#9E6E0C; --relational:#A63D66;
+  --reflective:#5A4C9C; --heuristic:#23786A; --pedagogical:#4C7A2A;
+  --f-display:"Bricolage Grotesque", "Avenir Next", "Segoe UI", system-ui, sans-serif;
+  --f-body:"Public Sans", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --f-quote:"Newsreader", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#121519; --surface:#1A1F25; --fg:#E7EAEE; --muted:#9AA3AE; --line:#2B323A; --on-hue:#11151A;
+    --strategic:#78A3D8; --cultural:#E48A64; --entrepreneurial:#DDAE4C; --relational:#E07CA3;
+    --reflective:#A396E4; --heuristic:#62BEAB; --pedagogical:#93C068; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#121519; --surface:#1A1F25; --fg:#E7EAEE; --muted:#9AA3AE; --line:#2B323A; --on-hue:#11151A;
+  --strategic:#78A3D8; --cultural:#E48A64; --entrepreneurial:#DDAE4C; --relational:#E07CA3;
+  --reflective:#A396E4; --heuristic:#62BEAB; --pedagogical:#93C068; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{background:var(--bg); color:var(--fg); font-family:var(--f-body); font-size:15px; line-height:1.55;
+  padding-left:max(16px, env(safe-area-inset-left, 0px)); padding-right:max(16px, env(safe-area-inset-right, 0px)); padding-block:28px 56px}
+.wrap{max-width:1320px; margin:0 auto}
+header.top{display:grid; gap:10px; max-width:860px; margin-bottom:28px}
+.eyebrow{font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); font-weight:600}
+h1{font-family:var(--f-display); font-weight:700; font-size:clamp(28px, 4vw, 44px); line-height:1.08; margin:0; text-wrap:balance; letter-spacing:-.01em}
+.lede{color:var(--muted); margin:0; max-width:68ch}
+.layout{display:grid; grid-template-columns:minmax(0, 1.3fr) minmax(0, 1fr); gap:36px; align-items:start}
+.wheel-col{position:sticky; top:calc(env(safe-area-inset-top, 0px) + 12px); display:grid; gap:14px; min-width:0}
+.wheel-box{width:100%; max-width:780px; margin:0 auto}
+svg.wheel{width:100%; height:auto; display:block; overflow:visible}
+.sector{cursor:pointer; transition:opacity .25s ease}
+.sector:focus{outline:none}
+.sector:focus-visible .r1{stroke:var(--fg); stroke-width:3}
+.wheel.has-active .sector:not(.active){opacity:.28}
+.seg{stroke:var(--bg); stroke-width:2.5}
+.r1{fill:var(--c)}
+.r2{fill:color-mix(in oklab, var(--c) 30%, var(--bg))}
+.r3{fill:color-mix(in oklab, var(--c) 16%, var(--bg))}
+.r4{fill:color-mix(in oklab, var(--c) 7%, var(--bg))}
+.sector:hover .r2{fill:color-mix(in oklab, var(--c) 40%, var(--bg))}
+.sector:hover .r3{fill:color-mix(in oklab, var(--c) 26%, var(--bg))}
+.sector:hover .r4{fill:color-mix(in oklab, var(--c) 15%, var(--bg))}
+.t-name{fill:var(--on-hue); font-family:var(--f-display); font-weight:700; font-size:17px}
+.t-desc{fill:var(--on-hue); font-size:11.5px; opacity:.9; letter-spacing:.02em}
+.t-code{fill:var(--fg); font-size:11px; font-weight:600; font-variant-numeric:tabular-nums; letter-spacing:.02em; opacity:.78}
+.t-lab{fill:var(--fg); font-size:13px; font-weight:600}
+.t-pyp{fill:var(--c); font-size:10px; font-weight:700; letter-spacing:.06em}
+.t-quote{fill:var(--fg); font-family:var(--f-quote); font-style:italic; font-size:15px}
+.t-src{fill:var(--muted); font-size:10px; letter-spacing:.09em; text-transform:uppercase; font-weight:600}
+.hub{fill:var(--surface); stroke:var(--line); stroke-width:1.5}
+.t-hub1{fill:var(--fg); font-family:var(--f-display); font-weight:700; font-size:16px}
+.t-hub2{fill:var(--muted); font-size:9.5px; letter-spacing:.1em; text-transform:uppercase; font-weight:600}
+.ring-label{fill:var(--muted); font-size:9px; letter-spacing:.14em; text-transform:uppercase; font-weight:600}
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; justify-content:center; font-size:12.5px; color:var(--muted)}
+.legend span{display:inline-flex; align-items:center; gap:7px}
+.sw{width:14px; height:14px; border-radius:50%; border:1px solid var(--line); flex:none}
+.sw.s1{background:var(--muted)} .sw.s2{background:color-mix(in oklab, var(--muted) 45%, var(--bg))}
+.sw.s3{background:color-mix(in oklab, var(--muted) 22%, var(--bg))} .sw.s4{background:color-mix(in oklab, var(--muted) 9%, var(--bg))}
+.hint{text-align:center; font-size:12.5px; color:var(--muted); margin:0}
+.btn{font:inherit; font-size:12.5px; font-weight:600; color:var(--fg); background:var(--surface); border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer}
+.btn:focus-visible{outline:2px solid var(--fg); outline-offset:2px}
+.cards{display:grid; gap:22px; min-width:0}
+.card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:22px 22px 20px; display:grid; gap:16px; scroll-margin-top:16px; transition:border-color .25s, box-shadow .25s; min-width:0}
+.card.active{border-color:var(--c); box-shadow:0 0 0 2px color-mix(in oklab, var(--c) 35%, transparent)}
+.card-head{display:grid; grid-template-columns:auto 1fr; gap:4px 14px; align-items:center; cursor:pointer}
+.dot{width:38px; height:38px; border-radius:50%; background:var(--c); grid-row:span 2; display:grid; place-items:center; color:var(--on-hue); font-family:var(--f-display); font-weight:700; font-size:16px}
+.card h2{font-family:var(--f-display); font-size:22px; line-height:1.15; margin:0; font-weight:700}
+.def{margin:0; color:var(--muted); font-size:14px}
+.aspire{margin:0; font-size:14px; padding:10px 14px; border-radius:10px; background:color-mix(in oklab, var(--c) 9%, var(--surface))}
+.aspire b{font-weight:600; color:var(--c)}
+.topics{display:grid; grid-template-columns:1fr 1fr; gap:16px}
+.topic h3{margin:0 0 8px; font-size:11.5px; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); font-weight:600}
+.topic ul{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.topic li{display:grid; gap:1px; font-size:13.5px; line-height:1.4}
+.code{font-variant-numeric:tabular-nums; font-size:12px; font-weight:600; color:var(--c); display:flex; gap:6px; align-items:center}
+.pyp{font-size:9.5px; letter-spacing:.08em; font-weight:700; color:var(--c); border:1px solid color-mix(in oklab, var(--c) 55%, transparent); border-radius:4px; padding:0 4px; line-height:15px}
+.link{margin:0; font-size:13.5px; color:var(--fg)}
+.link b{font-weight:600}
+.quotes{display:grid; gap:14px}
+figure.q{margin:0; display:grid; grid-template-columns:22px 1fr; gap:0 6px}
+figure.q::before{content:"\201C"; font-family:var(--f-quote); font-size:40px; line-height:.9; color:var(--c)}
+blockquote{margin:0; font-family:var(--f-quote); font-style:italic; font-size:16.5px; line-height:1.4}
+figcaption{grid-column:2; font-size:12.5px; color:var(--muted); margin-top:4px; display:flex; flex-wrap:wrap; gap:4px 8px; align-items:center}
+.tag{font-size:10px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; border-radius:999px; padding:1px 8px}
+.tag.read{background:color-mix(in oklab, var(--c) 16%, var(--surface)); color:var(--fg)}
+.tag.mine{border:1px solid var(--line); color:var(--fg)}
+section.refs{margin-top:44px; max-width:880px; display:grid; gap:10px; font-size:13.5px; color:var(--muted)}
+section.refs h2{font-family:var(--f-display); font-size:20px; color:var(--fg); margin:0}
+section.refs ul{margin:0; padding-left:18px; display:grid; gap:6px}
+section.refs p{margin:0}
+@media (max-width: 1060px){
+  .layout{grid-template-columns:minmax(0,1fr)}
+  .wheel-col{position:static}
+}
+@media (max-width: 560px){
+  .topics{grid-template-columns:1fr}
+  .card{padding:18px 16px}
+}
+@media (prefers-reduced-motion: reduce){ .sector,.card{transition:none} }
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <header class="top">
+    <div class="eyebrow">IBEC Module 1 · Programme standards and practices (2020) · PYP · Chris Davis</div>
+    <h1>Seven leadership intelligences for Environment and Learning</h1>
+    <p class="lede">Each slice of the wheel is one IB leadership intelligence (Calnin et al., 2018). Reading outward: the Environment practices it supports, the Learning practices it supports, and quotes from the course readings and from my own work. Select a slice to jump to its detail.</p>
+  </header>
+
+  <div class="layout">
+    <div class="wheel-col">
+      <div class="wheel-box"><svg class="wheel" id="wheel" viewBox="-505 -505 1010 1010" role="img" aria-label="Concentric mind map: seven leadership intelligences at the centre, then Environment practices, Learning practices, and quotes in the outer ring"></svg></div>
+      <div class="legend" aria-hidden="true">
+        <span><i class="sw s1"></i>Intelligence</span>
+        <span><i class="sw s2"></i>Environment (PSP 02)</span>
+        <span><i class="sw s3"></i>Learning (PSP 04)</span>
+        <span><i class="sw s4"></i>Quotes</span>
+      </div>
+      <p class="hint"><button class="btn" id="showAll" type="button">Show all slices</button></p>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+
+  <section class="refs">
+    <h2>Sources</h2>
+    <p>Practice codes are from the 2020 PSP. Practice wording on this map is paraphrased; quotes are verbatim. “PYP” marks a Primary Years Programme requirement.</p>
+    <ul>
+      <li>Azzi, I. (2018). Reading the “international” through postcolonial theory: A case study of the adoption of the International Baccalaureate at a school in Lebanon. <i>International Education Journal: Comparative Perspectives, 17</i>(1), 51–65.</li>
+      <li>Cailey, R. J. (2026, October 31). The educational singularity. <i>Nomadic Notes</i>, LinkedIn.</li>
+      <li>Calnin, G., Waterson, M., Richards, S., &amp; Fisher, D. (2018). Developing leaders for International Baccalaureate World Schools. <i>Journal of Research in International Education, 17</i>(2), 99–115.</li>
+      <li>Hattie, J., &amp; Hamilton, A. (2018). <i>Education cargo cults must die.</i> Corwin.</li>
+      <li>International Baccalaureate Organization. (2020). <i>Programme standards and practices</i> (published 2018, updated April 2020).</li>
+      <li>Callaway, C. (2026, November 4). Interview by C. Davis [Transcript]. IBEC Module 1 school leader interview.</li>
+      <li>Davis, C. (2026). <i>IB leadership intelligences and measuring student learning in the PYP</i>; <i>Week 3 forum: Recruitment and leadership intelligences</i>; <i>Culture, context and stakeholder engagement in IB schools: Reflective responses</i>; forum replies (Rose, Thorn and Bud). IBEC Module 1 coursework.</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+const R = "Course reading", M = "My work";
+const DATA = [
+ {id:"strategic", name:"Strategic", desc:"vision into systems",
+  def:"Seeing the big picture and turning a shared vision into systems that outlast any one leader.",
+  aspire:"The learning environment and the curriculum are designed as one system that stays aligned as staff come and go.",
+  frag:"creating the future and anticipating the consequences", srcs:"Calnin · Callaway · Davis",
+  env:[["0201-04-0200","Data to sustain","Captures and uses data on the operation and sustainability of the programme"],
+       ["0201-05-0100","Fund resources","Funds adequate resources to implement the programme"],
+       ["0201-03-0111","","Schedule provides for the required number of transdisciplinary units of inquiry",1]],
+  learn:[["0401-01-0200","Vertical alignment","Articulates the curriculum horizontally and vertically"],
+       ["0401-01-0300","Local integration","Integrates IB frameworks with school, local and national requirements"],
+       ["0401-03-0500","","Keeps the curriculum current and clearly communicated to the community"]],
+  link:"Cal's vertical alignment meetings put 0401-01-0200 into practice. My unpaid Friday blog hour shows why 0201-05 funding has to cover teacher time.",
+  quotes:[[R,"…responding appropriately to the present, creating the future and anticipating the consequences","MacGilchrist et al., quoted in Calnin et al. (2018, p. 106)"],
+          [M,"You have to establish consistency before you allow innovation. Otherwise teachers don't know the baseline they're innovating on.","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"Strategic intelligence reminds us that we are hiring for the school's future, not only for this year's vacancy.","Davis, Week 3 forum: Recruitment (2026)"],
+          [M,"…a system that depends on individual sacrifice is fragile and inequitable.","Davis, Culture, context and stakeholder engagement (2026)"]]},
+ {id:"cultural", name:"Cultural", desc:"context & difference",
+  def:"Reading context and difference, and building intercultural understanding across the whole community.",
+  aspire:"Every learner's identity and languages count as resources, and the host country is visible in the curriculum.",
+  frag:"not empty containers waiting for an imported curriculum", srcs:"Azzi · Cailey · Callaway · Davis",
+  env:[["0202-02-0300","Inclusion","Provides staff, facilities and resources as set out in the inclusion policy"],
+       ["0202-05-0100","Host community","Identifies and uses wider community resources that aid and extend learning"]],
+  learn:[["0402-07-0100","Identities","Opportunities for students to explore personal and cultural identities"],
+       ["0403-03-0100","Local + global","Clear local and global connections in the curriculum"],
+       ["0402-07-0300","","Students develop their language profiles"],
+       ["0402-02-0300","","Students connect the learner profile with international-mindedness"]],
+  link:"Azzi and Cailey warn that “international” can quietly mean one nation's view. Local connections (0403-03) and identity work (0402-07) are the counterweight, and Cal admits his school does not yet do enough of it.",
+  quotes:[[R,"…a continued reliance on national perspectives risks promoting a hegemonic class of states","Azzi (2018, p. 51)"],
+          [R,"These places are not empty containers waiting for an imported curriculum to give them intellectual substance.","Cailey (2026), The educational singularity"],
+          [M,"…if you can't tell where you are in the world by looking around the school, the school isn't representing its country.","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"A deep understanding of culture lets a school recognize that the IB philosophy is itself culturally situated, and that families need it translated into terms they can see and trust.","Davis, Culture, context and stakeholder engagement (2026)"],
+          [M,"…make sure thinking and learner profile attributes would not be sacrificed to language level.","Davis, Measuring student learning in the PYP (2026)"]]},
+ {id:"entrepreneurial", name:"Entrepreneurial", desc:"opportunity & change",
+  def:"Creative, discovery-driven engagement with opportunities, partnerships and change.",
+  aspire:"Spaces, technology and community partners extend learning beyond the classroom walls.",
+  frag:"active, creative and discovery-driven engagement", srcs:"Calnin · Hattie · Callaway · Davis",
+  env:[["0202-01-0500","Flexible spaces","Uses programme documentation to design learning spaces for flexibility and collaboration"],
+       ["0202-01-0400","Connected tech","Technologies connect the community to current IB resources"],
+       ["0202-05-0100","","Community partners extend learning (shared with Cultural)"]],
+  learn:[["0402-06-0211","PYP exhibition","Students take part in the PYP exhibition in their final year",1],
+       ["0402-05-0100","Taking action","Students apply their learning by taking action"],
+       ["0403-01-0400","","Student choice in appropriate places in the curriculum"],
+       ["0403-05-0500","","Teachers use multiple technologies to aid and extend learning"]],
+  link:"Cal's STEM centre and Hattie's warning about “shiny things” pull in opposite directions. Evidence of impact on students decides which one a new space turns out to be.",
+  quotes:[[R,"…it is the commitment to active, creative and discovery-driven engagement that particularly resonates with IB school leaders","Calnin et al. (2018, p. 107)"],
+          [R,"We are all for diversity in teacher professional learning, curriculum materials and student resources, but that diversity must come with evidence of impact.","Hattie & Hamilton (2018)"],
+          [M,"A brand-new STEM centre breathes life into science, engineering, maths and everything else, because everyone wants to be in that space","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"…communication is not an overhead on teaching but part of how teaching becomes visible, trusted and sustained.","Davis, Culture, context and stakeholder engagement (2026)"]]},
+ {id:"relational", name:"Relational", desc:"trust & care",
+  def:"Building trust and ethical relationships that make collaboration and professional risk-taking possible.",
+  aspire:"Families, specialists and students act as co-authors of learning rather than its audience.",
+  frag:"a positive attitude to risk taking", srcs:"Calnin · Callaway · Davis",
+  env:[["0202-03-0400","Open communication","Promotes open communication based on understanding and respect"],
+       ["0202-05-0200","Guardian voice","Meaningful opportunities for legal guardians to contribute"],
+       ["0202-03-0300","","Leaders and teachers support students' social, emotional and physical well-being"]],
+  learn:[["0401-02-0112","Team planning","Programme of inquiry planned with classroom and specialist teachers",1],
+       ["0402-03-0300","Student voice","Pedagogical leaders create opportunities for student voice"],
+       ["0403-04-0100","","Teachers collaborate for a holistic, coherent learning experience"]],
+  link:"Trust comes before teachers will try inquiry (0403-01) or families will contribute (0202-05-0200). The four silent weeks before parents answered my blog were trust being tested.",
+  quotes:[[R,"…establishing a trusting and supportive climate and ethos is important not only for creating and sustaining a collaborative culture but also for encouraging a positive attitude to risk taking.","Tschannen-Moran, in Calnin et al. (2018, p. 108)"],
+          [M,"I talk to everybody because I enjoy it, and the bonus is that I hear about problems weeks before the principals do.","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"Families do not need more information; they need a frame.","Davis, Culture, context and stakeholder engagement (2026)"],
+          [M,"A teacher who expects judgment will play it safe for the observer","Davis, forum reply: Rose, Thorn and Bud (2026)"]]},
+ {id:"reflective", name:"Reflective", desc:"evidence & impact",
+  def:"Evaluating practice and one's own impact, and being willing to question received wisdom.",
+  aspire:"The school knows its impact on students and changes course when the evidence says so.",
+  frag:"Collect evidence to know thy impact.", srcs:"Hattie · Calnin · Callaway · Davis",
+  env:[["0201-04-0300","Quality data","Captures and uses data on the quality of programme implementation"],
+       ["0201-01","Review IB rules","Regularly reviews and follows IB rules, regulations and guidelines"],
+       ["0203-01-0200","","Teachers use current programme documentation in the classroom"]],
+  learn:[["0403-01-0200","Evaluate inquiry","Monitors and evaluates inquiry-based teaching strategies"],
+       ["0404-01-0100","Feedback loops","Students and teachers use feedback against stated outcomes"],
+       ["0402-02-0200","","Students reflect on their growth in the learner profile"],
+       ["0401-03-0400","","Regularly reviews required and supporting IB content"]],
+  link:"Data on implementation (0201-04-0300) matters only when leaders test their own judgment against it. Cal's student-by-student data meetings do that for academics and well-being alike.",
+  quotes:[[R,"Collect evidence to know thy impact.","Hattie & Hamilton (2018)"],
+          [R,"…create a trusting environment where staff can challenge and debate the effect they have and use the information to devise future innovations","Hattie (2015), in Calnin et al. (2018, p. 110)"],
+          [M,"…we present data, go through every single kid, and talk about what we can change to support them.","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"…we trust our judgment, but we test it against evidence.","Davis, Week 3 forum: Recruitment (2026)"]]},
+ {id:"heuristic", name:"Heuristic", desc:"judgment under pressure",
+  def:"Sound judgment in complex, time-pressured situations: knowing when to act on experience and when to pause.",
+  aspire:"Daily calls about needs, grouping and time stay true to the philosophy, even when there is no time to deliberate.",
+  frag:"everything seems to work somewhere and nothing everywhere", srcs:"Calnin · Hattie · Callaway · Davis",
+  env:[["0202-02-0100","Identify needs","Reviews the systems that identify students' needs"],
+       ["0202-02-0200","Support needs","Supports identified needs in planning, policy and practice"],
+       ["0201-03-0100","","A schedule that lets programme requirements be met"]],
+  learn:[["0403-04-0311","Flexible grouping","Flexible grouping to maximize learning and collaboration",1],
+       ["0403-05-0100","Variability","Plans personal learning goals with learner variability in mind"],
+       ["0403-05-0200","","Teachers integrate students' prior knowledge"],
+       ["0401-01-0600","","Curriculum shaped by students' prior knowledge, identities and contexts"]],
+  link:"Flexible grouping and support decisions happen in the moment. In my neurodivergent micro school, 15-minute checklists turned quick calls into evidence, and Cal's Addis hub regrouped learners across four classes.",
+  quotes:[[R,"They need to know when to pause, reflect, consult and consider problems from different perspectives prior to making a well-considered decision.","Calnin et al. (2018, p. 111)"],
+          [R,"everything seems to work somewhere and nothing everywhere","Wiliam (2014), quoted in Hattie & Hamilton (2018)"],
+          [M,"There's no such thing as a rule. You have to build for your context","Dr. Cal Callaway, my school leader interview (2026)"],
+          [M,"…the plan worked, but only because we constantly paired each learning goal with adaptations to the intervention.","Davis, Measuring student learning in the PYP (2026)"]]},
+ {id:"pedagogical", name:"Pedagogical", desc:"leading learning",
+  def:"Leading the study of teaching and learning so the school works as a community of learners.",
+  aspire:"Every teacher has the time, training and documentation to teach through inquiry and to see learning over time.",
+  frag:"watch, not the teacher, but the impact of the teacher", srcs:"Calnin · Hattie · Davis",
+  env:[["0201-02","IB coordinator","An IB-trained coordinator on the pedagogical team facilitates implementation"],
+       ["0203-02-0100","IB training","Meets IB-mandated professional development requirements"],
+       ["0203-03-0100","","Dedicated, scheduled time for collaborative planning and reflection"]],
+  learn:[["0403-01-0100","Inquiry teaching","Teachers use inquiry-based strategies and learning engagements"],
+       ["0404-02-0111","Document learning","Teachers document and analyse learning over time",1],
+       ["0403-02-0100","","Teaching focuses on conceptual understanding"],
+       ["0401-02-0111","","Teachers use the PYP planner or a documented planning process",1]],
+  link:"Hattie's “watch the impact” turns walkthroughs into evidence for 0404-02-0111. My audio-based, co-written observations aim at the same thing.",
+  quotes:[[R,"…are expected to demonstrate pedagogical leadership aligned with the philosophy of the programme(s)","IB (2014), quoted in Calnin et al. (2018, p. 111)"],
+          [R,"The sweet spot is when teachers engage in meaningful peer lesson observation for development purposes and watch, not the teacher, but the impact of the teacher.","Hattie & Hamilton (2018)"],
+          [M,"…PYP assessment leans toward monitoring and documenting rather than heavy measuring.","Davis, Measuring student learning in the PYP (2026)"],
+          [M,"Too many observation videos and notes focus on teacher actions when it is really the students outcomes that matter.","Davis, forum reply: Rose, Thorn and Bud (2026)"]]}
+];
+
+const NS = "http://www.w3.org/2000/svg";
+const svg = document.getElementById("wheel");
+const N = DATA.length, A = 2*Math.PI/N;
+const RAD = {hub:86, r1:190, r2:300, r3:410, r4:498};
+const el = (tag, attrs={}, parent) => { const e = document.createElementNS(NS, tag); for (const k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; };
+const pt = (r, a) => [r*Math.cos(a), r*Math.sin(a)];
+function ann(r0, r1, a0, a1){
+  const [x0,y0]=pt(r1,a0),[x1,y1]=pt(r1,a1),[x2,y2]=pt(r0,a1),[x3,y3]=pt(r0,a0), L=(a1-a0)>Math.PI?1:0;
+  return `M${x0},${y0} A${r1},${r1} 0 ${L} 1 ${x1},${y1} L${x2},${y2} A${r0},${r0} 0 ${L} 0 ${x3},${y3} Z`;
+}
+const defs = el("defs", {}, svg);
+let pathId = 0;
+function arcText(g, r, a0, a1, text, cls, fs){
+  const mid = (a0+a1)/2, lower = Math.sin(mid) > 0.05;
+  const rr = lower ? r + fs*0.34 : r - fs*0.34;
+  const pad = 0.02;
+  let d;
+  if (!lower){ const [x0,y0]=pt(rr,a0+pad),[x1,y1]=pt(rr,a1-pad); d=`M${x0},${y0} A${rr},${rr} 0 0 1 ${x1},${y1}`; }
+  else { const [x0,y0]=pt(rr,a1-pad),[x1,y1]=pt(rr,a0+pad); d=`M${x0},${y0} A${rr},${rr} 0 0 0 ${x1},${y1}`; }
+  const id = "p"+(pathId++);
+  el("path", {id, d, fill:"none"}, defs);
+  const t = el("text", {class:cls, "text-anchor":"middle"}, g);
+  const tp = el("textPath", {href:"#"+id, startOffset:"50%"}, t);
+  tp.textContent = text;
+  const avail = Math.abs(a1-a0-2*pad)*rr;
+  requestAnimationFrame(() => { try { if (t.getComputedTextLength() > avail) { t.setAttribute("textLength", avail.toFixed(1)); t.setAttribute("lengthAdjust","spacingAndGlyphs"); } } catch(e){} });
+}
+function block(g, r, mid, items){
+  const [cx, cy] = pt(r, mid);
+  const lines = [];
+  items.filter(it => it[1]).slice(0,2).forEach((it,i) => {
+    if (i) lines.push(["gap"]);
+    lines.push(["code", it[0] + (it[3] ? "  PYP" : "")]);
+    lines.push(["lab", it[1]]);
+  });
+  const H = {code:15, lab:17, gap:8};
+  const total = lines.reduce((s,l)=>s+H[l[0]],0);
+  let y = cy - total/2;
+  lines.forEach(l => {
+    y += H[l[0]];
+    if (l[0]==="gap") return;
+    const t = el("text", {x:cx.toFixed(1), y:(y-3).toFixed(1), "text-anchor":"middle", class: l[0]==="code" ? "t-code" : "t-lab"}, g);
+    if (l[0]==="code" && l[1].includes("PYP")) {
+      const [c] = l[1].split("  ");
+      t.appendChild(document.createTextNode(c + " "));
+      const s = el("tspan", {class:"t-pyp"}, t); s.textContent = "PYP";
+    } else t.textContent = l[1];
+  });
+}
+
+DATA.forEach((d, i) => {
+  const mid = -Math.PI/2 + i*A, a0 = mid - A/2, a1 = mid + A/2;
+  const g = el("g", {class:"sector", "data-id":d.id, tabindex:"0", role:"button", "aria-label":`${d.name} intelligence: show details`, style:`--c: var(--${d.id})`}, svg);
+  const tip = el("title", {}, g); tip.textContent = `${d.name}: ${d.def}`;
+  el("path", {class:"seg r1", d:ann(RAD.hub, RAD.r1, a0, a1)}, g);
+  el("path", {class:"seg r2", d:ann(RAD.r1, RAD.r2, a0, a1)}, g);
+  el("path", {class:"seg r3", d:ann(RAD.r2, RAD.r3, a0, a1)}, g);
+  el("path", {class:"seg r4", d:ann(RAD.r3, RAD.r4, a0, a1)}, g);
+  const lowerSide = Math.sin(mid) > 0.05;
+  arcText(g, lowerSide ? 124 : 158, a0, a1, d.name, "t-name", 17);
+  arcText(g, lowerSide ? 160 : 122, a0, a1, d.desc, "t-desc", 11.5);
+  block(g, (RAD.r1+RAD.r2)/2, mid, d.env);
+  block(g, (RAD.r2+RAD.r3)/2, mid, d.learn);
+  arcText(g, lowerSide ? 436 : 468, a0, a1, "“" + d.frag + "”", "t-quote", 15);
+  arcText(g, lowerSide ? 472 : 434, a0, a1, d.srcs, "t-src", 10);
+  g.addEventListener("click", () => select(d.id, true));
+  g.addEventListener("keydown", e => { if (e.key==="Enter" || e.key===" ") { e.preventDefault(); select(d.id, true); } });
+});
+el("circle", {class:"hub", r:RAD.hub-2}, svg);
+const h1 = el("text", {class:"t-hub1", "text-anchor":"middle", y:"-6"}, svg); h1.textContent = "Leadership";
+const h2 = el("text", {class:"t-hub1", "text-anchor":"middle", y:"14"}, svg); h2.textContent = "intelligences";
+const h3 = el("text", {class:"t-hub2", "text-anchor":"middle", y:"36"}, svg); h3.textContent = "PYP · PSP 2020";
+
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const li = it => `<li><span class="code">${esc(it[0])}${it[3] ? '<span class="pyp">PYP</span>' : ''}</span>${esc(it[2])}</li>`;
+document.getElementById("cards").innerHTML = DATA.map(d => `
+  <article class="card" id="${d.id}" data-id="${d.id}" style="--c: var(--${d.id})">
+    <div class="card-head" role="button" tabindex="0" aria-label="Highlight ${d.name} on the wheel">
+      <div class="dot" aria-hidden="true">${d.name[0]}</div>
+      <h2>${d.name}</h2>
+      <p class="def">${esc(d.def)}</p>
+    </div>
+    <p class="aspire"><b>Aspiration it serves:</b> ${esc(d.aspire)}</p>
+    <div class="topics">
+      <div class="topic"><h3>Environment</h3><ul>${d.env.map(li).join("")}</ul></div>
+      <div class="topic"><h3>Learning</h3><ul>${d.learn.map(li).join("")}</ul></div>
+    </div>
+    <p class="link"><b>Connection:</b> ${esc(d.link)}</p>
+    <div class="quotes">${d.quotes.map(q => `
+      <figure class="q"><blockquote>${esc(q[1])}</blockquote>
+        <figcaption><span class="tag ${q[0]===R ? 'read' : 'mine'}">${q[0]}</span>${esc(q[2])}</figcaption></figure>`).join("")}
+    </div>
+  </article>`).join("");
+
+let active = null;
+function select(id, scroll){
+  active = (active === id && !scroll) ? null : id;
+  svg.classList.toggle("has-active", !!active);
+  document.querySelectorAll(".sector").forEach(s => s.classList.toggle("active", s.dataset.id === active));
+  document.querySelectorAll(".card").forEach(c => c.classList.toggle("active", c.dataset.id === active));
+  if (active && scroll) {
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    document.getElementById(active).scrollIntoView({behavior: reduce ? "auto" : "smooth", block:"start"});
+  }
+}
+document.querySelectorAll(".card-head").forEach(h => {
+  const id = h.parentElement.dataset.id;
+  h.addEventListener("click", () => select(id, false));
+  h.addEventListener("keydown", e => { if (e.key==="Enter" || e.key===" ") { e.preventDefault(); select(id, false); } });
+});
+document.getElementById("showAll").addEventListener("click", () => { active = null; select(null, false); });
+</script>
+
+</body>
+</html>
